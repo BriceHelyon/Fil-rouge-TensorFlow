@@ -1,0 +1,56 @@
+# creation des services pour deployer les applications à l'aide de leur image dans des conteneurs sur Dockerhub en reprenant le build des Dockerfile cote client et serveur
+version: '3'
+
+services:
+
+  # Conteneur FastAPI avec son image
+  fastapi:
+  
+    image: lwdu76/my-fastapi-app:latest
+    container_name: fastapi-container
+
+    # Construit l'image en fonction des instructions dans le Dockerfile
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+
+    # Port du conteneur accessible sur la machine (hote) -> http://localhost:8000
+    ports:
+      - "8000:8000"
+
+  # Conteneur ReactJS avec son image
+  reactjs:
+    
+    image: lwdu76/my-react-app:latest
+    container_name: reactjs-container
+
+    # Construit l'image en fonction des instructions dans le Dockerfile
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+
+    # Port du conteneur accessible sur la machine (hote) -> http://localhost:3000
+    ports:
+      - "3000:3000"
+
+  # Conteneur TensorFlow avec son image
+  tensorflow:
+    
+    image: tensorflow/tensorflow:latest
+    container_name: tensorflow-container
+
+    # Stock le dossier des classes dans un conteneur localement (pour ne pas reconstruire l'image TensorFlow)
+    volumes:
+      - ./server/ia/class:/app
+
+    # Appel la classe Main du dossier CLass
+    working_dir: /app
+    command: python main.py
+
+    # Port du conteneur accessible sur la machine (hote) -> http://localhost:8501
+    ports:
+      - "8501:8501"
+
+networks:
+  default:
+    driver: bridge

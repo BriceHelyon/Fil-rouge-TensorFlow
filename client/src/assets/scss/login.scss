@@ -1,0 +1,64 @@
+.body-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+
+    .form {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .form { 
+        flex-direction: column;
+        width: 450px;
+    
+    }
+    
+    .field {
+        display: flex;
+        flex-direction: column;
+       
+    }
+    
+    input {
+        background-color: rgba(217,217,217,0.5);
+        height: 70px;
+        color: #9F9C9C;
+        padding: 0 15px;
+    }
+
+    .btn {
+        height: 70px;
+        background-color: var(--color-primary);
+        color: white;
+    }
+
+    input, .btn {
+        border-radius: 20px;
+        font-size: 16px;
+    }
+    
+    .img {
+        width: 544px;
+        height: 526px;
+    }
+    
+    .error {
+        font-size: var(--font-normal);
+        color: var(--color-danger);
+        margin: 0;
+    
+    }
+}
+
+
+
+

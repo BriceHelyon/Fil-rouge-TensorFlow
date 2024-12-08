@@ -1,0 +1,93 @@
+# Nom du Pipeline
+name: CI_CD Pipeline
+
+# Declenche un evenement quand on realise un Push / Pull Requests sur la Branche Main
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Ensemble des taches reparties dans un job
+jobs:
+
+  build:
+  
+    # Construction du Pipeline CI / CD
+    name: Build, Analyze, Tests and Deploy
+    runs-on: ubuntu-latest
+
+    # Creation des services avec leur Image et leur Ports dediees (SonarQube, Selenium, TensorFlow)
+    services:
+      sonarqube:
+        image: sonarqube:latest
+        ports:
+          - 9000:9000
+
+      selenium:
+        image: selenium/standalone-chrome:latest
+        ports:
+          - 4444:4444
+          
+      tensorflow:
+        image: tensorflow/tensorflow:latest
+        ports:
+          - 8501:8501
+  
+    steps:
+    
+      # Verification du depot Github avec l'outil SonarQube 
+      - name: Checkout repository with SonarQube
+        uses: actions/checkout@v3
+
+      # Lancement des analyses de code avec l'outil SonarQube
+      # - name: Run SonarQube Analysis
+      #   run: |
+      #     docker run --rm \
+      #       -e SONAR_HOST_URL="http://31.33.81.6:9000" \
+      #       -e SONAR_HOST_URL="http://localhost:9000" \
+      #       -e SONAR_LOGIN="${{ secrets.SONAR_TOKEN }}" \
+      #       -v $(pwd):/usr/src \
+      #       sonarsource/sonar-scanner-cli
+
+      # Connexion a DockerHub
+      - name: Login to DockerHub
+        run: |
+          echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      # Installation du Docker-Compose pour FastAPI and ReactJS (cote Client et Serveur)
+      - name: Setup Docker-Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
+      # Construction des images Docker pour FastAPI et ReactJS (cote Client et Serveur)
+      - name: Build Docker Images with Docker Compose
+        run: |
+          docker-compose -f docker-compose.yml build
+
+      # Lancement des tests unitaires du cote Serveur avec PyTest
+      - name: Run Pytest for Python and FastAPI
+        run: |
+          docker-compose -f docker-compose.yml up -d
+          sleep 15
+          docker-compose -f docker-compose.yml run --rm fastapi pytest unit_tests/test_main.py
+
+      # Lancement des tests fonctionnels du cote Client avec Selenium
+      - name: Run Selenium Tests
+        run: |
+          docker-compose -f docker-compose.yml up -d
+          sleep 15
+          docker-compose -f docker-compose.yml run --rm selenium pytest fonctionnal_tests/test_ui.py
+
+      # Envoi de l'image Docker sur le DockerHub
+      - name: Push Docker Images with Docker Compose
+        run: |
+          docker-compose -f docker-compose.yml push
+
+      # Deploiement des conteneurs avec l'utilisation d'un Docker Compose
+      - name: Deploy containers with Docker Compose
+        run: |
+          docker-compose -f docker-compose.yml up -d

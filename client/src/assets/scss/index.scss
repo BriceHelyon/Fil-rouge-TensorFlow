@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+@import 'navbar.scss';
+@import 'dashboard.scss';
+@import 'equipment.scss';
+@import 'calendar.scss';
+@import 'user.scss';
+@import 'error.scss';
+@import 'login.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+  border: 0;
+  outline: 0;
+}
+
+:root {
+  --color-primary: #50CCAA;
+  --color-secondary: #202A54;
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-light-black: rgba(0, 0, 0, .25);
+  --color-grey: #9197B3;
+  --color-light-grey: rgba(226, 236, 249, .5);
+  --color-success: #00B087;
+  --color-success-secondary: rgba(22, 192, 152, .38);
+  --color-warning: #FF9F43;
+  --color-warning-secondary: rgba(255, 159, 67, .12);
+  --color-danger: #DF0404;
+  --color-danger-secondary: #FFC5C5;
+
+  --font-h1: 1.8rem;
+  --font-h2: 1.4rem;
+  --font-h3: 1rem;
+  --font-normal: .9rem;
+  --font-small: .7rem;
+
+
+  --box-shadow-navbar: 1rem 0 2rem var(--color-light-grey);
+  --box-shadow-navbar-2: 0 1rem 2rem var(--color-light-grey);
+  --box-shadow-componants: 0 1rem 2rem var(--color-light-black);
+
+  --border-radius-1: 1rem;
+  --border-radius-2: .6rem;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  color: var(--color-black);
+  background-color: var(--color-white);
+}
+
+main {
+  margin: 1rem;
+  position: relative;
+}
+
+img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.app-content {
+  width: 100%;
+  height: 100%;
+ 
+  @media screen and (min-width: 1000px) {
+    margin-left: 18rem;
+    margin-right: 1rem;
+    width: calc(100% - 20rem);
+  }
+}

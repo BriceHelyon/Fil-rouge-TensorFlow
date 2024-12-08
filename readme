@@ -1,0 +1,49 @@
+==> Front-end <==
+
+Lors du clonage du projet, allez dans le terminal afin d'installer les packages requis pour le bon fonctionnement de l'application.
+
+Dans le terminal, tapez :
+
+-> cd client\
+-> npm i
+
+=> Pour lancer l'application, vous devez être dans le dossier client.
+
+Si vous n'êtes pas dans le dossier client dans votre terminal, tapez :
+
+-> cd client\
+-> npm run dev
+
+Si vous êtes dans le dossier client dans votre terminal, tapez :
+
+-> npm run dev
+
+==> Back-end <==
+cd server
+
+==> Back-end + IA <==
+
+Dans le terminal, tapez :
+-> cd server\
+
+Pour créer l'environnement :
+python -m venv env_server
+
+Activer l'environnement : env_server\Scripts\activate
+
+Réaliser la mise à jour de pip :
+python -m pip install --upgrade pip
+
+Installer toutes les dépendances :
+pip install -r requirements.txt
+
+Lancer l'IA :
+python main.py
+
+==> API <==
+
+Dans le terminal, tapez :
+-> cd api/app
+
+Lancer l'API :
+fastapi dev main.py
